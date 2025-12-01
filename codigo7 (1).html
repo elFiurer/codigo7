@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODIGO 7 - Hard Rock Band</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #e63946;
+            --secondary-color: #1a1a1a;
+            --accent-color: #f1faee;
+            --text-light: #ffffff;
+            --gradient: linear-gradient(135deg, #e63946 0%, #a8201a 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Header y Navegación */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(230, 57, 70, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .logo {
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo .flame-left,
+        .logo .flame-right {
+            -webkit-text-fill-color: initial !important;
+            background: none !important;
+        }
+
+        .flame-left,
+        .flame-right {
+            font-size: 2rem;
+            animation: flameFlicker 1s infinite alternate;
+            filter: drop-shadow(0 0 10px orange);
+        }
+
+        .flame-right {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes flameFlicker {
+
+            0%,
+            100% {
+                opacity: 0.8;
+                transform: scale(1) rotate(-5deg);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2) rotate(5deg);
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(230, 57, 70, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(230, 57, 70, 0.6);
+        }
+
+        /* Secciones */
+        section {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            scroll-margin-top: 80px;
+        }
+
+        section#home {
+            padding-top: 100px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        /* Biografía */
+        .bio-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .bio-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .bio-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.3), rgba(168, 32, 26, 0.3)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect fill="%23222" width="400" height="400"/><text x="200" y="200" text-anchor="middle" fill="%23e63946" font-size="80" font-family="Arial">C7</text></svg>');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Música */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .music-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .music-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.3);
+        }
+
+        .music-card iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+        }
+
+        .music-info {
+            padding: 1.5rem;
+        }
+
+        .music-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.7rem 2rem;
+            background: rgba(230, 57, 70, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            background: var(--primary-color);
+        }
+
+        /* Descargas */
+        .downloads-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .download-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .download-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(10px);
+        }
+
+        .download-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .download-item p {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .download-item a {
+            padding: 0.8rem 2rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .download-item a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(230, 57, 70, 0.5);
+        }
+
+        /* Galería */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            height: 250px;
+            background: linear-gradient(45deg, rgba(230, 57, 70, 0.3), rgba(168, 32, 26, 0.3)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250"><rect fill="%23333" width="250" height="250"/><circle cx="125" cy="125" r="50" fill="%23e63946" opacity="0.3"/></svg>');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item::after {
+            content: '📷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.5);
+        }
+
+        /* Miembros */
+        .members-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .member-card {
+            width: calc(33.333% - 1.5rem);
+            min-width: 250px;
+        }
+
+        .member-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .member-avatar {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 5px 20px rgba(230, 57, 70, 0.4);
+        }
+
+        .member-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contacto */
+        .contact-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 5px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .contact-form button {
+            padding: 1rem;
+            background: var(--gradient);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .contact-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(230, 57, 70, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .social-link:hover {
+            background: rgba(230, 57, 70, 0.2);
+            transform: translateX(10px);
+        }
+
+        .social-icon {
+            font-size: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 5rem;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .bio-content,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .download-item {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            section#home h1 {
+                font-size: 3rem !important;
+            }
+        }
+
+        /* Animación de entrada */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body id="top">
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="flame-left">🔥</span>
+                CODIGO 7
+                <span class="flame-right">🔥</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#top">Inicio</a></li>
+                <li><a href="#bio">Biografía</a></li>
+                <li><a href="#music">Música</a></li>
+                <li><a href="#downloads">Descargas</a></li>
+                <li><a href="#gallery">Galería</a></li>
+                <li><a href="#members">Banda</a></li>
+                <li><a href="#contact">Redes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home">
+        <!-- Video de fondo con llamas -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 0;">
+    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;">
+        <source src="img/llamas.mp4" type="video/mp4">
+    </video>
+</div>
+            
+
+        <div style="max-width: 800px; width: 100%; text-align: center; position: relative; z-index: 1;">
+            <!-- Foto de la banda -->
+            <div
+                style="width: 70%; margin: 0 auto 0.5rem auto; border-radius: 10px; overflow: hidden; box-shadow: 0 20px 60px rgba(230, 57, 70, 0.5);">
+                <img src="img/codigo7.jpg" alt="Codigo 7" style="width: 100%; height: auto; display: block;">
+            </div>
+
+
+            <p style="font-size: 1.8rem; margin-bottom: 2rem; color: #fff; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 10px rgba(230, 57, 70, 0.8), 0 0 20px rgba(230, 57, 70, 0.6), 0 0 30px rgba(230, 57, 70, 0.4), 2px 2px 4px rgba(0,0,0,0.8);">
+    15 Años de Silencio. Un Rugido Eterno.
+</p>
+            <a href="#music" class="cta-button">ESCUCHA NUESTRO SONIDO</a>
+        </div>
+    </section>
+
+    <!-- Biografía -->
+    <section id="bio">
+        <h2 class="section-title">NUESTRA HISTORIA</h2>
+        <div class="bio-content fade-in">
+            <div class="bio-text">
+                <p style="margin-bottom: 1rem;">
+                    Codigo 7 nació en el corazón de la escena del hard rock, cuando cinco almas inquietas decidieron
+                    canalizar su rabia y pasión a través de riffs devastadores y letras que cortan como el acero.
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Después de 15 años de separación, el fuego nunca se apagó. Ahora regresamos, más fuertes,
+                    más experimentados, con la misma energía salvaje que nos definió desde el principio.
+                </p>
+                <p>
+                    Esta es nuestra carta de presentación al mundo. Codigo 7 no es solo una banda,
+                    es un estado mental, una declaración de principios. El rock nunca muere,
+                    solo espera el momento perfecto para volver a rugir.
+                </p>
+            </div>
+            <div class="bio-image"></div>
+        </div>
+    </section>
+
+    <!-- Música -->
+    <section id="music">
+        <h2 class="section-title">NUESTRA MÚSICA</h2>
+        <div class="music-grid fade-in">
+            <div class="music-card">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/_f5ID5qLXn8?si=mLPNpEQoFGnyCHOu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="music-info">
+                    <h3>Firmaré</h3>
+                    <p>Nuestro primer single del regreso</p>
+                    <a href="#downloads" class="download-btn">⬇ Descarga esta canción</a>
+                </div>
+            </div>
+            <div class="music-card">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/pwd2Eaj313I?si=Vm6RhZfhRB0lKn2F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="music-info">
+                    <h3>Muero por ti</h3>
+                    <p>Un clásico renovado</p>
+                    <a href="#downloads" class="download-btn">⬇ Descarga esta canción</a>
+                </div>
+            </div>
+            <div class="music-card">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/uWtcky5MQMg?si=vwOEEnWeChmIgWIE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="music-info">
+                    <h3>Volver a Verte</h3>
+                    <p>Himno de nuestra generación</p>
+                    <a href="#downloads" class="download-btn">⬇ Descarga esta canción</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Descargas -->
+    <section id="downloads" style="background: rgba(230, 57, 70, 0.05);">
+        <h2 class="section-title">DESCARGAS</h2>
+        <div class="downloads-container fade-in">
+
+            <div class="download-item">
+                <div>
+                    <h3>🎵 Volver a verte.mp3</h3>
+                    <p>320kbps • 4.2 MB • 3:45 min</p>
+                </div>
+                <a href="https://www.mediafire.com/file_premium/wp41hk5mrkld6yu/Volver_a_Verte_-__Codigo_7.mp3/file" download>DESCARGAR</a>
+            </div>
+
+            <div class="download-item">
+                <div>
+                    <h3>🎵 Firmaré.mp3</h3>
+                    <p>320kbps • 3.8 MB • 3:20 min</p>
+                </div>
+                <a href="https://www.mediafire.com/file_premium/9cfhwwmyhpm9hrc/Firmar%25C3%25A9_-_Codigo_7.mp3/file" download>DESCARGAR</a>
+            </div>
+
+            <div class="download-item">
+                <div>
+                    <h3>🎵 Muero por ti.mp3</h3>
+                    <p>320kbps • 4.5 MB • 3:58 min</p>
+                </div>
+                <a href="https://www.mediafire.com/file_premium/mhm3d29s147aclf/Muero_por_ti_-_Codigo_7.mp3/file" download>DESCARGAR</a>
+            </div>
+
+            <div class="download-item">
+                <div>
+                    <h3>🎵 49 Días.mp3</h3>
+                    <p>320kbps • 4.1 MB • 3:35 min</p>
+                </div>
+                <a href="https://www.mediafire.com/file_premium/c27iggse8na1dj1/49_d%25C3%25ADas_-_Codigo_7.mp3/file" download>DESCARGAR</a>
+            </div>
+
+            <div class="download-item">
+                <div>
+                    <h3>🎵 Recordaré.mp3</h3>
+                    <p>320kbps • 5.2 MB • 4:30 min</p>
+                </div>
+                <a href="https://www.mediafire.com/file_premium/bqd3klpm3ogjpts/Recordar%25C3%25A9_-_Codigo_7.mp3/file" download>DESCARGAR</a>
+            </div>
+            <div class="download-item">
+                <div>
+                    <h3>🎵 Contra el tiempo.mp3</h3>
+                    <p>320kbps • 5.2 MB • 4:30 min</p>
+                </div>
+                <a href="https://www.mediafire.com/file_premium/y4gd20lpkeghbnp/contra_el_tiempo_-__Codigo_7.mp3/file" download>DESCARGAR</a>
+            </div>
+
+            <div class="download-item">
+                <div>
+                    <h3>💿 Álbum Completo - CODIGO 7 (2010)</h3>
+                    <p>ZIP • 45 MB • descarga todas las 6 canciones</p>
+                </div>
+                <a href="https://www.mediafire.com/file_premium/l608cbf1jrphwer/AlbumCodigo7-2010.rar/file" download>DESCARGAR</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Galería -->
+    <section id="gallery">
+        <h2 class="section-title">GALERÍA</h2>
+        <div class="gallery-grid fade-in">
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+            <div class="gallery-item"></div>
+        </div>
+    </section>
+
+    <!-- Miembros -->
+    <section id="members">
+        <h2 class="section-title">LA BANDA</h2>
+        <div class="members-grid fade-in">
+            <div class="member-card">
+                <div class="member-avatar">🎤</div>
+                <h3>NOMBRE</h3>
+                <p>Voz Principal</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">
+                    La voz que define nuestra identidad sonora.
+                </p>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar">🎸</div>
+                <h3>NOMBRE</h3>
+                <p>Guitarra Principal</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">
+                    Riffs que destrozan almas.
+                </p>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar">🎸</div>
+                <h3>NOMBRE</h3>
+                <p>Guitarra Rítmica</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">
+                    El pulso que mantiene el fuego vivo.
+                </p>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar">🎸</div>
+                <h3>NOMBRE</h3>
+                <p>Bajo</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">
+                    Las frecuencias que sacuden el pecho.
+                </p>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar">🥁</div>
+                <h3>NOMBRE</h3>
+                <p>Batería</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">
+                    El trueno que anuncia la tormenta.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contact">
+        <h2 class="section-title">REDES</h2>
+        <div class="contact-container fade-in">
+
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <span class="social-icon">📘</span>
+                    <div>
+                        <strong>Facebook</strong>
+                        <p style="font-size: 0.9rem; margin-top: 0.3rem;">@codigo7band</p>
+                    </div>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-icon">📸</span>
+                    <div>
+                        <strong>Instagram</strong>
+                        <p style="font-size: 0.9rem; margin-top: 0.3rem;">@codigo7oficial</p>
+                    </div>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-icon">🎵</span>
+                    <div>
+                        <strong>YouTube</strong>
+                        <p style="font-size: 0.9rem; margin-top: 0.3rem;">Codigo 7 Official</p>
+                    </div>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-icon">🎧</span>
+                    <div>
+                        <strong>Spotify</strong>
+                        <p style="font-size: 0.9rem; margin-top: 0.3rem;">Codigo 7</p>
+                    </div>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-icon">✉️</span>
+                    <div>
+                        <strong>Email</strong>
+                        <p style="font-size: 0.9rem; margin-top: 0.3rem;">contacto@codigo7.com</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 CODIGO 7. Todos los derechos reservados.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">El rock nunca muere. Solo espera.</p>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Animación de entrada al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.8s forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Manejo del formulario
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto. 🤘');
+            event.target.reset();
+        }
+    </script>
+</body>
+
+</html>
